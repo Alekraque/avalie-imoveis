@@ -10,35 +10,6 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
 
-type PropertyData = {
-  // Property type
-  propertyType: string
-
-  // Location
-  address: string
-  pricePerSqm: string
-
-  // Rooms
-  suites: string
-  bathrooms: string
-  livingRooms: string
-  kitchens: string
-  parkingSpaces: string
-
-  // Features
-  hasPool: boolean
-
-  // Decor types
-  decorModern: boolean
-  decorClassic: boolean
-  decorMinimalist: boolean
-  decorIndustrial: boolean
-  decorRustic: boolean
-
-  // Paint condition
-  exteriorPaint: string
-  interiorPaint: string
-}
 
 export default function PropertyValuationForm() {
   const [propertyData, setPropertyData] = useState<PropertyData>({
@@ -358,7 +329,7 @@ export default function PropertyValuationForm() {
             <h3 className="text-lg font-semibold">Condição da Pintura</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="exteriorPaint">Condição da Pintura Externa</Label>
+                <Label htmlFor="exteriorPaint">Pintura Externa</Label>
                 <Select
                   value={propertyData.exteriorPaint}
                   onValueChange={(value) => setPropertyData({ ...propertyData, exteriorPaint: value })}
@@ -376,7 +347,7 @@ export default function PropertyValuationForm() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="interiorPaint">Condição da Pintura Interna</Label>
+                <Label htmlFor="interiorPaint">Pintura Interna</Label>
                 <Select
                   value={propertyData.interiorPaint}
                   onValueChange={(value) => setPropertyData({ ...propertyData, interiorPaint: value })}
