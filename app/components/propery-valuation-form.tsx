@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 export default function PropertyValuationForm() {
   const [propertyData, setPropertyData] = useState<PropertyData>({
     propertyType: "",
+    propertySubtype: "",
     address: "",
     pricePerSqm: "",
     suites: "",
@@ -68,6 +69,28 @@ export default function PropertyValuationForm() {
     { value: "5", label: "5 - completamente novo" },
   ]
 
+  const propertySubtypes = {
+    house: [
+      { value: "sobrado", label: "Sobrado" },
+      { value: "asobradado", label: "Asobradado" },
+      { value: "terrea", label: "Térrea" },
+      { value: "geminada", label: "Casa Geminada" },
+      { value: "palafita", label: "Palafita" },
+    ],
+    apartment: [
+      { value: "flat", label: "Flat" },
+      { value: "loft", label: "Loft" },
+      { value: "kitnet", label: "Kitnet" },
+      { value: "studio", label: "Studio" },
+    ],
+    warehouse: [
+      { value: "industrial", label: "Galpão Industrial" },
+      { value: "logistico", label: "Galpão Logístico" },
+      { value: "comercial", label: "Galpão Comercial/Armazenamento Convencional" },
+      { value: "urbano", label: "Galpão Urbano" },
+    ],
+  }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -77,23 +100,67 @@ export default function PropertyValuationForm() {
         </CardHeader>
         <CardContent className="space-y-8">
           {/* Tipo do imóvel */}
-          <div className="space-y-2">
-            <Label htmlFor="propertyType">Tipo do imóvel</Label>
-            <Select
-              value={propertyData.propertyType}
-              onValueChange={(value) => setPropertyData({ ...propertyData, propertyType: value })}
-            >
-              <SelectTrigger id="propertyType">
-                <SelectValue placeholder="Selecione o tipo do imóvel" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="house">Casa</SelectItem>
-                <SelectItem value="apartment">Apartamento</SelectItem>
-                <SelectItem value="warehouse">Galpão</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="space-y-4 flex">
+            <div className="flex flex-col gap-6">
+              <div className="space-y-2" >
+                <Label htmlFor="propertyType">Tipo do imóvel</Label>
+                <Select
+                  value={propertyData.propertyType}
+                  onValueChange={(value) => 
+                    setPropertyData({ ...
+                      propertyData, propertyType: value,
+                      propertySubtype: "" })}
+                >
+                  <SelectTrigger id="propertyType">
+                    <SelectValue placeholder="Selecione o tipo do imóvel" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="house">Casa</SelectItem>
+                    <SelectItem value="apartment">Apartamento</SelectItem>
+                    <SelectItem value="warehouse">Galpão</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {propertyData.propertyType && (
+                <div className="space-y-2">
+                  <Label htmlFor="propertySubtype">
+                    {propertyData.propertyType === "house" && "Tipo de Casa"}
+                    {propertyData.propertyType === "apartment" && "Tipo de Apartamento"}
+                    {propertyData.propertyType === "warehouse" && "Tipo de Galpão"}
+                  </Label>
+                  <Select
+                    value={propertyData.propertySubtype}
+                    onValueChange={(value) => setPropertyData({ ...propertyData, propertySubtype: value })}
+                  >
+                    <SelectTrigger id="propertySubtype">
+                      <SelectValue placeholder={propertyData.propertyType === "house" ? "selecione o tipo de casa" : propertyData.propertyType === "apartment" ? "selecione o tipo de apartamento" : "selecione o tipo de galpão"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {propertySubtypes[propertyData.propertyType as keyof typeof propertySubtypes]?.map((subtype) => (
+                        <SelectItem key={subtype.value} value={subtype.value}>
+                          {subtype.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+            {propertyData.propertySubtype && (
+              <div className="ml-8 flex-1 p-4 border rounded-lg bg-muted">
+                <h1 className="mb-4">{`O que é um ${propertyData.propertySubtype}?`}</h1>
+                {propertyData.propertyType === "house" && propertyData.propertySubtype === "sobrado" && (
+                  <p>Um sobrado é uma casa com dois ou mais andares (pavimentos), caracterizada por sua construção vertical que otimiza o espaço, sendo ideal para terrenos menores em áreas urbanas. Geralmente, as áreas sociais (sala, cozinha) ficam no térreo, e as áreas íntimas (quartos, banheiros) no andar superior, proporcionando mais privacidade, e historicamente surgiu no Brasil Colônia para moradias de senhores nas cidades, aproveitando o espaço sob o piso principal. </p>
+                )}
+                {propertyData.propertyType === "apartment" && propertyData.propertySubtype === "flat" && (
+                  <p>Um flat é um tipo de apartamento que combina características residenciais e hoteleiras, oferecendo comodidades como serviços de limpeza, recepção e, frequentemente, áreas comuns como piscinas e academias. Geralmente, os flats são mobiliados e projetados para estadias de curto a médio prazo, sendo ideais para profissionais em viagens de negócios ou turistas que buscam conveniência e conforto durante sua estadia.</p>
+                )}
+                {propertyData.propertyType === "warehouse" && propertyData.propertySubtype === "industrial" && (
+                  <p>Um galpão industrial é uma estrutura ampla e funcional projetada para abrigar atividades industriais, como fabricação, montagem e armazenamento de produtos. Caracteriza-se por sua construção robusta, com grandes vãos livres, pé-direito elevado e sistemas de ventilação adequados para suportar operações industriais. Esses galpões são essenciais para empresas que necessitam de espaços amplos e adaptáveis para suas operações produtivas.</p>
+                )}
+              </div>
+            )}
           </div>
-
           {/* Location Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Endereço e Preço</h3>
