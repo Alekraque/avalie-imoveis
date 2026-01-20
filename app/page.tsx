@@ -1,4 +1,5 @@
-import PropertyValuationForm from "./components/propery-valuation-form";
+import { AvaliaAiForm } from "./components/avaliaAIForm";
+
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
             Insira os detalhes do imóvel para obter uma avaliação precisa
           </p>
         </div>
-        <PropertyValuationForm />
+        <AvaliaAiForm/>
       </div>
     </div>
   );
