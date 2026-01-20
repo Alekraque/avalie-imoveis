@@ -1,6 +1,7 @@
 type PropertyData = {
   // Property type
   propertyType: string
+  propertySubtype: string
 
   // Location
   address: string
